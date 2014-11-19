@@ -27,10 +27,10 @@ let (x, y) = (1, 2)
 
 // MARK: *** OPTIONALS ***
 
-// Swift's optionals let you indicate the absense of a valid value for any type
-// Access the optional's value with !, which is known as forced unwrapping
-// Use it when you know for sure that there is value in an optional
-// If you try to use ! for an optional without a value, you'll get a runtime error
+// Swift's optionals let you indicate the absense of a valid value for any type.
+// Access the optional's value with !, which is known as forced unwrapping.
+// Use it when you know for sure that there is value in an optional.
+// If you try to use ! for an optional without a value, you'll get a runtime error.
 
 let possibleNumber = "123"
 let convertedNumber = possibleNumber.toInt() // returned type is Int?
@@ -52,7 +52,7 @@ if let actualNumber = possibleNumber.toInt() {
 }
 
 // Implicitly unwrapped optional is a normal optional, but can also be used like a nonoptional value.
-// Implicitly unwrapped optional must have a value, other a runtime error is triggered.
+// Implicitly unwrapped optional must have a value, otherwise a runtime error is triggered.
 
 let assumedString: String! = "Notice ! instead of ?"
 println(assumedString)
@@ -563,10 +563,14 @@ enum Planet: Int {
     case Mercury = 1, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune
 }
 
-let earthsOrder: Int = Planet.Earth.toRaw()
+let earthsOrder: Int = Planet.Earth.rawValue
 
-// use 'fromRaw' method to try to find an enumeration member ith a particular raw value
-if let possiblePlanet = Planet.fromRaw(7) { println(possiblePlanet) }
+// If you define an enumeration with a raw value type, the enumeration automatically receives an initializer
+// that takes a value of the raw value's type (called rawValue), and returns enumberation member or nil.
+let possiblePlanet = Planet(rawValue: 7)
+
+// use 'fromRaw' method to try to find an enumeration member with a particular raw value
+if let possiblePlanet = Planet(rawValue: 7) { println(possiblePlanet) }
 else { println("No such planet exists") }
 
 // MARK: *** CLASSES AND STRUCTURES ***
@@ -1123,7 +1127,7 @@ let hearsSymbol = BlackjackCard.Suite.Hearts.toRaw()
 // Extensions add new functionality to an existing class, structure, or enumeration type.
 // Extensions are similar to categories in Objective-c, but do not have names.
 // Extentions in Swift can:
-// - add computer properties and computed static properties
+// - add computed properties and computed static properties
 // - define instance methods and type methods
 // - provide new initializers
 // - define subscripts
@@ -1367,7 +1371,7 @@ private class SomePrivateClass {
     func somePrivateMethod() {}
 }
 
-// This funcation must be explicitly declared private, otherwise, it won't compile.
+// This function must be explicitly declared private, otherwise, it won't compile.
 // The reason is that its return type is a private tuple.
 // The access level for a tuple is the most restrictive level of all types in that tuple.
 // In this case, the returned tuple has SomePrivateClass member, which is private.
