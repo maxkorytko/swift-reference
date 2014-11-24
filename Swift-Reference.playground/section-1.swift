@@ -566,10 +566,9 @@ enum Planet: Int {
 let earthsOrder: Int = Planet.Earth.rawValue
 
 // If you define an enumeration with a raw value type, the enumeration automatically receives an initializer
-// that takes a value of the raw value's type (called rawValue), and returns enumberation member or nil.
+// that takes a value of the raw value's type (called rawValue), and returns enumeration member or nil.
 let possiblePlanet = Planet(rawValue: 7)
 
-// use 'fromRaw' method to try to find an enumeration member with a particular raw value
 if let possiblePlanet = Planet(rawValue: 7) { println(possiblePlanet) }
 else { println("No such planet exists") }
 
@@ -1209,11 +1208,17 @@ protocol RandomNumberGenerator {
     // if you need to define a type method, use 'class' keyword
 }
 
+class Rand: RandomNumberGenerator {
+    func generate() -> Double {
+        return 0.0
+    }
+}
+
 // Protocols can define initializers.
 // When a class conforms to the protocol, it must implement the initializers.
 // All implemented initializers must be marked with the 'required' keyword.
 
-// Protocols can extends other protocols.
+// Protocols can extend other protocols.
 // The syntax is the same as for class extension.
 
 // Protocol can be defined as class only protocol.
@@ -1223,7 +1228,7 @@ protocol SomeClassOnlyProtocol: class {
     
 }
 
-// You can confirm to a protocol from a class extension as well.
+// You can conform to a protocol from a class extension as well.
 // If, for example, a class already implements all the requirements of a protocol,
 // but it does not conform to the protocol, you can create an empty extension,
 // which conforms to the protocol.
