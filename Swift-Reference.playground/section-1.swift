@@ -611,6 +611,25 @@ if someVideoMode !== someOtherVideoMode {
 // Use the equality operator (==) to check if two objects are equal.
 // Object equality is defined by their classes.
 
+// Static members
+
+class Car {
+    let brand: String
+    let make: String
+    
+    init(brand: String, make: String) {
+        self.brand = brand
+        self.make = make
+    }
+    
+    class func bmwM5() -> Car {
+        return self.dynamicType.init(brand: "BMW", make: "M5")
+    }
+}
+
+var bmw = Car.bmwM5()
+print(bmw.make)
+
 // MARK: *** PROPERTIES ***
 
 struct FixedLengthRange {
@@ -910,22 +929,50 @@ let twoByTwo = Size2(width: 2.0, height: 2.0)
 // This is because classes can inherit from other classes, while value types can not.
 // For value types use 'self.init' to invoke an initializer from another initializer.
 
-// Designated initializers are the primary initializers for a class.
-// A designated initializer fully initializes all properties of the class and calls an appropriate super initializer.
-// It's very common for a class to have only one designated initializer (it must have at least one).
+// Classes may have designated, convenience, and failable initializers.
+// A given class must have at least one designated initializer.
+// Designated intializer is responsible for setting initial values for all properties.
+// A class is not initialized until all properties receive an initial value.
+// Convenience initializers must always call a designated initalizer form the same class (never super).
+// For this reason, convenience initializers are said to delegate 'across'.
 
-// Convenience initializers simplify class initialization by invoking a designated initializer and providing
-// default values for some parameters.
-// Convenience initializers are optional.
+// In Swift, initialization is a two-phase process.
 
-// Designated initializers must always call a designated initializer from the super class (if there is a super class).
-// Convenience initializers must always call a designated initializer from the same class.
+// In the first phase, each property is assigned a value by the designated initializer from the class
+// that introduced the properties.
+// The first phase is called the initialization phase.
 
-// In Swift, a subclass does NOT inherit initializers from its base class.
-// However, in some cases initializers are automatically inherited.
-// See 'Automatic Initializer Inheritance' section in the reference documentation.
+// In the second phase, a class is given the opportunity to customize property values.
+// The second phase is called the customization phase.
 
-// The code sample below is taken from the Swift reference documention.
+// Swift compiler performs four safety checks to ensure the class is properly initialized.
+// Read about the four safety steps in the 'Two-Phase Initialization' section in the Swift guide.
+
+// The basic idea is the following:
+// A class is created by either calling its designated or convenience initializer.
+// If a convenience intializer is called, it must call another convenience or designated initializer
+// before setting values for any of the properties.
+// Once the designated intializer is called, it must first set initial values for all properties that
+// this class introduced.
+// Then, if the class extends another class, it must call the super designated initializer.
+// This chain of method calls will continue to go 'up', until a class that does not extend
+// any other class is reached, and its designated initializer is called.
+// This signals the end of phase one, and from this moment on, the call chain goes back 'down'.
+// Now, phase two begins, and each class can customize values for inherited properties.
+
+
+// Initializers are not inherited by default in Swift.
+// However, super class initializers are automatically inherited if certain conditions are met.
+// These conditions are the following (provided that the class sets default values for all
+// properties it introduces):
+// - if the class does not define any designated initializers, it inherits all of its super class
+//   designated initializers
+// - if the class provides an implementation of all of its super class designated initializers,
+//   it inherits all of the super class convenience initializers
+
+// Read 'Automatic Initializer Inheritance' section in the Swift guide for more details.
+
+// The code sample below illustrates two-phase initialization and automatic initializer inheritance.
 // https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/Initialization.html#//apple_ref/doc/uid/TP40014097-CH18-XID_306
 // Navigate to the 'Designated and Convenience Initializers in Action' section for more details.
 
@@ -933,32 +980,53 @@ class Food {
     var name: String
     
     // this is the designated initializer
-    // it must call 'up' to the super class designated initializer
+    // it must set initial values for all properties introduced by this class
+    // it must also call 'up' to the super class designated initializer
     // however, there is no super class in this case
     //
     init(name: String) {
         self.name = name
     }
     
+    // this is a convenience initializer
+    // it must call 'across' to the designated initializer
     convenience init() {
-        // since this is a convenience initializer, it must call 'across' to a designated initializer
         self.init(name: "[Unnamed]")
+        
+        // implement any customization here
     }
 }
+
+let namedMeat = Food(name: "Bacon") // Bacon
+let unnamedMeat = Food()// [Unnamed]
 
 class RecipeIngredient: Food {
     var quantity: Int
     
     init(name: String, quantity: Int) {
+        // this class introduced a new property, so it must initialize it first
         self.quantity = quantity
+        
         super.init(name: name)
+        
+        // implement any customization here
     }
     
+    // this initializer takes the same parameters as the designated initializer in Food
+    // for this reason, it must be marked with the 'override' modifier
     override convenience init(name: String) {
+        // delegate 'across' to the designated initializer
         self.init(name: name, quantity: 1)
     }
 }
 
+let oneUnnamedItem = RecipeIngredient()
+let oneBacon = RecipeIngredient(name: "Bacon")
+let sigEggs = RecipeIngredient(name: "Eggs", quantity: 6)
+
+// This class provides a default value for each of the properties it introduces.
+// Also, it does not introduce any new designated initializers.
+// For this reason, this class inherits all the designated and convenience initializers.
 class ShoppingListItem: RecipeIngredient {
     var purchased = false
     
@@ -980,6 +1048,27 @@ class SomeClass2 {
         return 0
         }() // we're calling this closure immediately. Otherwise it will be assigned to the property.
 }
+
+// Sometimes it's useful to define a type for which the initializatin may fail.
+// To achieve, this create a failable initializer.
+
+struct Animal {
+    let species: String
+    
+    // This is a failable initializer
+    init?(species: String) {
+        if species.isEmpty {
+            return nil
+        }
+        
+        self.species = species
+    }
+}
+
+var someCreature = Animal(species: "Giraffe") // the returned type is Animal? not Animal
+
+// Classes have more complex requirements in regards to failable initializers.
+// See 'Failable Initializers for Classes' section in the Swift guide.
 
 // MARK: *** DEINITIALIZATION ***
 
