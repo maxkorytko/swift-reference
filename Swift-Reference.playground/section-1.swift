@@ -106,7 +106,7 @@ print("This is an example of string interpolation. \(2 * 2)")
 
 if mutableName == immutableName {}
 
-// MARK: *** ARRAYS ***
+// MARK: ARRAYS
 
 // all elements of an array are of the same type
 
@@ -546,7 +546,7 @@ case .QRCode(let productCode):
     println("QRCode")
 }
 
-// If all associated values are extracted as constants of variables, use a shorter syntax:
+// If all associated values are extracted as constants or variables, use a shorter syntax:
 // 'case let .UPCA(numberSystem, manufacturer, product, check):'
 
 // Enumeration values can come prepopulated with different values (called raw values),
@@ -1206,7 +1206,7 @@ struct BlackjackCard {
     }
 }
 
-let hearsSymbol = BlackjackCard.Suite.Hearts.toRaw()
+let heartsSymbol = BlackjackCard.Suite.Hearts.rawValue
 
 // Nested types can be nested inside other nested types.
 
@@ -1356,7 +1356,9 @@ protocol SomeClassOnlyProtocol: class {
 
 // MARK: *** GENERICS ***
 
-// This is an example of a type parameter.
+// Swift allows you to define generic functions and generic types.
+
+// This is an example of a generic function.
 // 'T' is a placeholder type.
 //
 func swapValues<T>(inout a: T, inout b: T) {
@@ -1369,6 +1371,11 @@ var a1 = 1, b1 = 2
 // Swift automatically infers the type to use in place of T
 swapValues(&a1, &b1)
 
+// If a function or type has a single type parameter, it is traditionally named 'T'.
+// However, for multiple type parameters, choose names that accurately describe their purpose.
+// Always use UpperCamelCase to name type parameters.
+
+// This is an example of a generic type.
 struct Stack<T> {
     var items = [T]()
     
@@ -1387,10 +1394,10 @@ stackOfStrings.pop()
 
 // When you extend a generic type, you do not provide a type parameter list as part of the
 // extension's definition.
-// Type parameter list from the original type are available within the body fo the extension.
+// Type parameter list from the original type are available within the body of the extension.
 
 extension Stack {
-    var topItem: T? { // <-- this is a computed property
+    var topItem: T? { // <-- this is a computed read-only property
         return items.isEmpty ? nil : items[items.count - 1]
     }
 }
@@ -1410,7 +1417,7 @@ func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
 // Associated Types.
 
 protocol Container {
-    typealias ItemType
+    typealias ItemType // this is an associated type
     
     mutating func append(item: ItemType)
     var count: Int { get }
@@ -1418,8 +1425,8 @@ protocol Container {
 }
 
 // The protocol above does not specify a concrete type of items.
-// Instead it uses a type alias to denote that the type must be specified at conformance time.
-// When conforming to the protocol, the class or structure must implement all the required methods
+// Instead it uses a type alias to denote that the type must be specified at adoption time.
+// When adopting this protocol, the class or structure must implement all the required methods
 // and use a concrete type (such as Int or Double) in place of 'ItemType'.
 
 // Where Clause.
@@ -1490,7 +1497,7 @@ public class A {
 internal class B : A {
     // Class B overrides a private method in class A, and it makes it less restrictive.
     // The reason why it's possible is because class B is declared in the same source file as A,
-    // so it can seen private members of A.
+    // so it can see private members of A.
     //
     override internal func someMethod() {
         super.someMethod()
