@@ -1,4 +1,4 @@
-// VERSION 1.0
+// Swift Version 1.2
 
 // A quick reference to all the Swift features.
 // Source: The Swift Programming Language -> Language Guide by Apple
@@ -97,7 +97,19 @@ let immutableName = "Max"
 var mutableName = "Max"
 mutableName += " Korytko"
 
-countElements(immutableName)
+count(immutableName)
+
+/*
+Characters in Swift do not each take up the same amount of memory within a string's representation.
+As a result, the length of a string cannot be calculated without iterating through the string.
+'count' function must iterate over all the characters of the string.
+
+Note that the character count returned by 'count' is not always the same as the length property of an NSString
+that contains the same characters. The length of an NSString is based on the number of 16-bit code units within
+the string’s UTF-16 representation and not the number of Unicode characters within the string.
+*/
+
+count(immutableName.utf16)
 
 print("This is an example of string interpolation. \(2 * 2)")
 
@@ -191,6 +203,8 @@ for (key, value) in ["key1":"value1", "key2":"value2"] {}
 
 for var index = 0; index < 3; ++index {}
 
+for index in 0...3 {}
+
 var i = 0
 while (i < 5) { i++ }
 
@@ -258,7 +272,7 @@ func sumAny(params: Any...) -> String {
         case let s as String where s.toInt() > 0:
             return s.toInt()!
         case is Int:
-            return param as Int
+            return param as! Int
         default:
             return 0
         }
@@ -395,6 +409,20 @@ func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
     return backwards ? stepBackward : stepForward
 }
 
+// Be aware that you can not call a nested function from another nested function in Swift.
+// You will get compiler error you do this:
+
+func someFunctionA() {
+    func someNestedFunctionB() {
+        
+    }
+    
+    func someNestedFunctionC() {
+        // you should get a compiler error: 'Cannot reference a local function with capture from another local function'
+        someNestedFunctionB()
+    }
+}
+
 // MARK: *** CLOSURES ***
 
 // Closures are self-contained blocks of functionality that can be passed around.
@@ -440,6 +468,16 @@ reversed = sorted(names, { $0 > $1 })
 // If a function has a single argument, which is a closure, you can omit the parentheses.
 
 reversed = sorted(names) { $0 > $1 }
+
+// If you don't need a parameter passed to the closure, you can replace its name with an underscore.
+
+func handleEvent(handler: (event: String) -> Void) -> Void {
+    handler(event: "LearnSwift")
+}
+
+handleEvent() { _ in
+    print("I am handling an event")
+}
 
 let digitNames = [
     0: "Zero", 1: "One", 2: "Two",   3: "Three", 4: "Four",
@@ -1076,6 +1114,12 @@ var someCreature = Animal(species: "Giraffe") // the returned type is Animal? no
 // Swifts calls 'deinit' method automatacally.
 // This method returns nothing and has no parameters.
 
+class TestDeinit {
+    deinit {
+        // do something
+    }
+}
+
 // MARK: *** AUTOMATIC REFERENCE COUNTING ***
 
 // Weak references are allowed to have no value.
@@ -1348,7 +1392,7 @@ protocol SomeClassOnlyProtocol: class {
     func increment() {
         if let amount = dataSource?.incrementForCount?(count) {
             count += amount
-        } else if let amount = dataSource?.fixedIncrement? {
+        } else if let amount = dataSource?.fixedIncrement {
             count += amount
         }
     }
@@ -1537,10 +1581,6 @@ willOverflow = willOverflow &+ 1
 var willUnderflow = UInt8.min
 willUnderflow = willUnderflow &- 1
 // willUnderflow is now 255
-
-// Division by 0
-let x1 = 1
-let y1 = x1 &/ 0 // y will be 0
 
 // Classes and structures can override existing operators.
 
