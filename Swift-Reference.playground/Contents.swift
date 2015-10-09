@@ -766,21 +766,21 @@ stepCounter.totalSteps = 360
 struct SomeStructure {
     static var storedTypeProperty = "Some value"
     static var computedTypeProperty: Int {
-    return 1
+        return 1
     }
 }
 
 enum SomeEnumeration {
     static var storedTypeProperty = "Some value"
     static var computedTypeProperty: Int {
-    return 1
+        return 1
     }
 }
 
 // For classes, you can only define computed type properties
 class SomeClass {
     class var computedTypeProperty: Int {
-    return 1
+        return 1
     }
 }
 
@@ -1070,8 +1070,8 @@ class ShoppingListItem: RecipeIngredient {
     
     var description: String {
         var output = "\(quantity) x \(name)"
-            output += purchased ? "â" : "â"
-            return output
+        output += purchased ? "â" : "â"
+        return output
     }
 }
 
@@ -1297,7 +1297,7 @@ extension Int {
             return .Negative
         default:
             return .Positive
-            }
+        }
     }
 }
 
