@@ -1,4 +1,6 @@
-// Swift Version 1.2
+import Foundation
+
+// Swift Version 2.0
 
 // A quick reference to all the Swift features.
 // Source: The Swift Programming Language -> Language Guide by Apple
@@ -33,7 +35,7 @@ let (x, y) = (1, 2)
 // If you try to use ! for an optional without a value, you'll get a runtime error.
 
 let possibleNumber = "123"
-let convertedNumber = possibleNumber.toInt() // returned type is Int?
+let convertedNumber = Int(possibleNumber) // returned type is Int?
 
 // An optional with a value evaluated to 'true'
 if convertedNumber != nil {
@@ -43,7 +45,7 @@ if convertedNumber != nil {
 }
 
 // this is called optional binding
-if let actualNumber = possibleNumber.toInt() {
+if let actualNumber = Int(possibleNumber) {
     // convertion successfull
     // use 'actualNumber' without !
     // it's value has been set to the value of the optional returned from toInt()
@@ -55,7 +57,7 @@ if let actualNumber = possibleNumber.toInt() {
 // Implicitly unwrapped optional must have a value, otherwise a runtime error is triggered.
 
 let assumedString: String! = "Notice ! instead of ?"
-println(assumedString)
+print(assumedString)
 
 // MARK: *** USING NIL ***
 
@@ -87,7 +89,7 @@ for index in 1...5 {
 
 // Half-open range includes the lower bound, but does not include the upper bound
 for index in 1..<5 {
-    println("index \(index)")
+    print("index \(index)")
 }
 
 // MARK: *** STRINGS ***
@@ -97,19 +99,7 @@ let immutableName = "Max"
 var mutableName = "Max"
 mutableName += " Korytko"
 
-count(immutableName)
-
-/*
-Characters in Swift do not each take up the same amount of memory within a string's representation.
-As a result, the length of a string cannot be calculated without iterating through the string.
-'count' function must iterate over all the characters of the string.
-
-Note that the character count returned by 'count' is not always the same as the length property of an NSString
-that contains the same characters. The length of an NSString is based on the number of 16-bit code units within
-the string’s UTF-16 representation and not the number of Unicode characters within the string.
-*/
-
-count(immutableName.utf16)
+immutableName.characters.count
 
 print("This is an example of string interpolation. \(2 * 2)")
 
@@ -150,7 +140,7 @@ var result = [1, 2, 3] + [4, 5, 6]
 
 for item in shoppingList {}
 
-for (index, value) in enumerate(shoppingList) {}
+for (index, value) in shoppingList.enumerate() {}
 
 // MARK: *** DICTIONARIES ***
 
@@ -208,7 +198,7 @@ for index in 0...3 {}
 var i = 0
 while (i < 5) { i++ }
 
-do {
+repeat {
     i--
     // continue and break work exactly the same as in Objective-C
 } while (i > 0)
@@ -218,14 +208,14 @@ let someCharacter = "e"
 switch someCharacter {
 case "a", "e", "i":
     // the body of each case must contain at least one line of executable code
-    println("\(someCharacter) is a vowel")
+    print("\(someCharacter) is a vowel")
     // no 'break' is required, since switch statements do not fall through in Swift
     // if you need to fall through for some reason, use the 'fallthrough' keyword
 case "b", "c", "d":
-    println("\(someCharacter) is a consonant")
+    print("\(someCharacter) is a consonant")
 default:
     // we need the default case, because switch must be exhaustive
-    println("I don't know what \(someCharacter) is")
+    print("I don't know what \(someCharacter) is")
 }
 
 // range matching
@@ -234,11 +224,11 @@ let age = 45
 
 switch age {
 case 1..<13:
-    println("Baby")
+    print("Baby")
 case 13..<20:
-    println("Teenager")
+    print("Teenager")
 default:
-    println("Grownup")
+    print("Grownup")
 }
 
 // tuples and value binding
@@ -246,12 +236,12 @@ default:
 let point = (0, 0)
 
 switch point {
-case (0, 0): println("origin")
+case (0, 0): print("origin")
 case (1, 1): break // This is how you can ignore a case. The code after the switch will be executed next.
-case (-2...2, -2...2): println("within the bounds")
-case(_, 0): println("somewhere at the top")
-case (let x, 0) where x > 5: println("\(x) on the x axis") // this is value binding
-case let (x, y): println("\(x) on x and \(y) on y") // this case is exhaustive, so no default is necessary
+case (-2...2, -2...2): print("within the bounds")
+case(_, 0): print("somewhere at the top")
+case (let x, 0) where x > 5: print("\(x) on the x axis") // this is value binding
+case let (x, y): print("\(x) on x and \(y) on y") // this case is exhaustive, so no default is necessary
 }
 
 // labeled statements
@@ -265,18 +255,18 @@ myLoop: while (i < 10) {
 }
 
 func sumAny(params: Any...) -> String {
-    return String(params.map{param in
+    return String(params.map { param in
         switch param {
         case "" as String, 0 as Int:
             return -10
-        case let s as String where s.toInt() > 0:
-            return s.toInt()!
+        case let s as String where Int(s) > 0:
+            return Int(s)!
         case is Int:
             return param as! Int
         default:
             return 0
         }
-        }.reduce(0){$0 + $1})
+    }.reduce(0){$0 + $1})
 }
 
 let resultEmpty = sumAny()
@@ -287,7 +277,7 @@ let result2 = sumAny("Martin Todorov", 2, 22, "-3", "10", "", 0, 33, -5)
 
 // void function
 func sayHelloWorld() {
-    println("Hello, World!")
+    print("Hello, World!")
     // returns Void (which is an empty tuple) implicitly
 }
 
@@ -309,7 +299,7 @@ func sayHello2(var name: String) -> String {
 
 // returning multiple values from a function using named tuples
 func count(string: String) -> (vowels: Int, consonants: Int, others: Int) {
-    var vowels = 0, consonants = 0, others = 0
+    let vowels = 0, consonants = 0, others = 0
     
     // implementation
     
@@ -317,7 +307,7 @@ func count(string: String) -> (vowels: Int, consonants: Int, others: Int) {
 }
 
 let total = count("some string!")
-println("\(total.vowels), \(total.consonants), \(total.others)")
+print("\(total.vowels), \(total.consonants), \(total.others)")
 
 // External parameter names.
 // They help make function parameters clear and unambiguous.
@@ -330,16 +320,18 @@ func join(string s1: String, toString s2: String, withJoiner joiner: String) -> 
 
 join(string: "Hello", toString: "World!", withJoiner: ", ")
 
-// use # to define an external parameter and internal parameter at once (both have the same name)
-func containsCharacter(#string: String, #characterToFind: Character) -> Bool {
-    for character in string {
+// By default, the first parameter omits its external name.
+// All subsequent parameter names have the same external name as their local name.
+//
+func containsCharacter(string: String, characterToFind: Character) -> Bool {
+    for character in string.characters {
         if character == characterToFind { return true }
     }
     
     return false
 }
 
-let containsAVee = containsCharacter(string: "aardvark", characterToFind: "v")
+let containsAVee = containsCharacter("aardvark", characterToFind: "v")
 
 // default parameter values
 func defaultJoin(string s1: String, toString s2:String, withJoiner joiner: String = " ") -> String {
@@ -357,8 +349,8 @@ func defaultJoiner2(s1: String, s2: String, joiner: String = " ") -> String {
     return s1 + joiner + s2
 }
 
-defaultJoiner2("Hello", "World")
-defaultJoiner2("Hello", "World", joiner: ", ")
+defaultJoiner2("Hello", s2: "World")
+defaultJoiner2("Hello", s2: "World", joiner: ", ")
 
 // In-Out parameters allow passing a variable to a function, and let the function change it.
 // The caller of the function will see the changes made by the function.
@@ -373,13 +365,13 @@ func swapInts(inout a: Int, inout b: Int) {
 }
 
 var a = 3, b = 4
-swapInts(&a, &b)
+swapInts(&a, b: &b)
 
 func swapIntsInOneLine(inout a: Int, inout b: Int) {
     (a, b) = (b, a)
 }
 
-swapIntsInOneLine(&a, &b)
+swapIntsInOneLine(&a, b: &b)
 
 
 // MARK: *** FUNCTION TYPES ***
@@ -389,7 +381,7 @@ swapIntsInOneLine(&a, &b)
 // Functions can have function type parameters and return function types as well.
 
 func printMathResults(mathFunction: (Int, Int) -> Int, a: Int, b: Int) {
-    println("Result: \(mathFunction(a, b))")
+    print("Result: \(mathFunction(a, b))")
 }
 
 func chooseStepFunction(backwards: Bool) -> (Int) -> Int {
@@ -436,8 +428,7 @@ func backwards(s1: String, s2: String) -> Bool {
     return s1 > s2
 }
 
-// sorted is a system function
-var reversed = sorted(names, backwards)
+var reversed = names.sort(backwards)
 
 // closure expression syntax has the following general form:
 
@@ -445,29 +436,29 @@ var reversed = sorted(names, backwards)
 //      statements
 // }
 
-reversed = sorted(names, { (s1: String, s2: String) -> Bool in
+reversed = names.sort({ (s1: String, s2: String) -> Bool in
     return s1 > s2
 })
 
 // when passing a closure to a function as a parameter,
 // it's always possible to infer the parameter and return types
 //
-reversed = sorted(names, { s1, s2 in return s1 > s2 })
+reversed = names.sort({ s1, s2 in return s1 > s2 })
 
 // single-expression closures can implicitly return the result of their single expression
-reversed = sorted(names, { s1, s2 in s1 > s2 })
+reversed = names.sort({ s1, s2 in s1 > s2 })
 
 // Swift automatically provides shorthand argument names to inline closures.
 // Therefore, you can omit the closure's argument list from its definition.
 // In such case, the 'in' keyword can also be omitted.
 
-reversed = sorted(names, { $0 > $1 })
+reversed = names.sort({ $0 > $1 })
 
 // If a function accepts a closure as its final argument,
 // you can write the closure as a trailing closure.
 // If a function has a single argument, which is a closure, you can omit the parentheses.
 
-reversed = sorted(names) { $0 > $1 }
+reversed = names.sort { $0 > $1 }
 
 // If you don't need a parameter passed to the closure, you can replace its name with an underscore.
 
@@ -546,11 +537,11 @@ directionToHead = .South
 
 switch directionToHead {
 case .North:
-    println("North")
+    print("North")
 case .South:
-    println("South")
+    print("South")
 default: // case must be exhaustive
-    println("East Or West")
+    print("East Or West")
     
 }
 
@@ -579,9 +570,9 @@ productBarcode = .QRCode("AGADGBDAFDA") // the value in productBarcode is replac
 
 switch productBarcode {
 case .UPCA(let numberSystem, let manufacturer, let product, let check):
-    println("UPCA")
+    print("UPCA")
 case .QRCode(let productCode):
-    println("QRCode")
+    print("QRCode")
 }
 
 // If all associated values are extracted as constants or variables, use a shorter syntax:
@@ -607,8 +598,8 @@ let earthsOrder: Int = Planet.Earth.rawValue
 // that takes a value of the raw value's type (called rawValue), and returns enumeration member or nil.
 let possiblePlanet = Planet(rawValue: 7)
 
-if let possiblePlanet = Planet(rawValue: 7) { println(possiblePlanet) }
-else { println("No such planet exists") }
+if let possiblePlanet = Planet(rawValue: 7) { print(possiblePlanet) }
+else { print("No such planet exists") }
 
 // MARK: *** CLASSES AND STRUCTURES ***
 
@@ -639,11 +630,11 @@ let someOtherVideoMode = VideoMode()
 
 // Use identity operator to check if two references refer to the same instance
 if someVideoMode === someOtherVideoMode {
-    println("Two references refer to the same instance")
+    print("Two references refer to the same instance")
 }
 
 if someVideoMode !== someOtherVideoMode {
-    println("Two references refer to different instances")
+    print("Two references refer to different instances")
 }
 
 // Use the equality operator (==) to check if two objects are equal.
@@ -661,7 +652,7 @@ class Car {
     }
     
     class func bmwM5() -> Car {
-        return self.dynamicType.init(brand: "BMW", make: "M5")
+        return Car(brand: "BMW", make: "M5")
     }
 }
 
@@ -745,11 +736,11 @@ class StepCounter {
     // this is a stored property with property observers
     var totalSteps: Int = 0 {
         willSet {
-            println("About to set totalSteps to \(newValue)")
+            print("About to set totalSteps to \(newValue)")
         }
         didSet {
             if (totalSteps > oldValue) {
-                println("Added \(totalSteps - oldValue) steps")
+                print("Added \(totalSteps - oldValue) steps")
             }
         }
     }
@@ -784,8 +775,8 @@ class SomeClass {
     }
 }
 
-println(SomeStructure.storedTypeProperty)
-println(SomeClass.computedTypeProperty)
+print(SomeStructure.storedTypeProperty)
+print(SomeClass.computedTypeProperty)
 
 // MARK: *** METHODS ***
 
@@ -934,7 +925,7 @@ class ServeyQuestion {
     }
     
     func ask() {
-        println(text)
+        print(text)
     }
 }
 
@@ -1157,11 +1148,11 @@ john = Customer(name: "John")
 john!.card = CreditCard(number: 123_213, customer: john!)
 john = nil
 
-// Unowned references and implicitly unwrapped optional types
+// Unowned references and implicitly unwrapped optional properties
 
 class Country {
     let name: String
-    let capitalCity: City!
+    var capitalCity: City!
     
     init(name: String, capitalName: String) {
         self.name = name
@@ -1193,7 +1184,7 @@ class Residence {
     var numberOfRooms = 1
     
     func printNumberOfRooms() {
-        println("The number of room \(numberOfRooms)")
+        print("The number of room \(numberOfRooms)")
     }
 }
 
@@ -1205,15 +1196,15 @@ let max = Person()
 // this is true despite that numberOfRooms has Int type (not optional Int)
 //
 if let roomCount = max.residence?.numberOfRooms { // this is called optional binding
-    println(roomCount)
+    print(roomCount)
 } else {
-    println("Unable to retrieve number of rooms")
+    print("Unable to retrieve number of rooms")
 }
 
 // Calling a method with optional chaining and determining it the call was successfull
 
 if max.residence?.printNumberOfRooms() != nil {
-    println("The call was successful")
+    print("The call was successful")
 }
 
 // When accessing subscripts through optional chaining, place ? before []
@@ -1372,20 +1363,19 @@ protocol SomeClassOnlyProtocol: class {
 // var name: protocol<ProtocolA, ProtocolB>
 
 // Use 'is', 'as', and 'as?' for protocol conformance.
-// The protocol must be marked with '@objc' attribute if you want to check it for conformance.
-// @objc protocols can only be adopted to by clases.
 
 // Protocols may have optional requirements.
 // Optional requirements are prefixed by the 'optional' keyword.
 // An optional protocol requirement can be called with optional chaining.
 // To use optional requirements, the protocol must be marked with '@objc' attribute.
+// @objc protocols can only be adopted to by clases.
 
 @objc protocol CounterDataSource {
     optional func incrementForCount(count: Int) -> Int // optional method requirement
     optional var fixedIncrement: Int { get } // optional property requirement
 }
 
-@objc class Counter2 {
+class Counter2 {
     var count = 0
     var dataSource: CounterDataSource?
     
@@ -1413,7 +1403,7 @@ func swapValues<T>(inout a: T, inout b: T) {
 
 var a1 = 1, b1 = 2
 // Swift automatically infers the type to use in place of T
-swapValues(&a1, &b1)
+swapValues(&a1, b: &b1)
 
 // If a function or type has a single type parameter, it is traditionally named 'T'.
 // However, for multiple type parameters, choose names that accurately describe their purpose.
@@ -1449,7 +1439,7 @@ extension Stack {
 // Type constraints.
 
 func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
-    for (index, value) in enumerate(array) {
+    for (index, value) in array.enumerate() {
         if value == valueToFind {
             return index
         }
