@@ -7,7 +7,7 @@ import UIKit
 // MARK: *** Initializers
 
 // When ObjC initializers come over to Swift, they take on native Swift initialier syntax.
-// initWith gets slices off.
+// initWith gets sliced off.
 
 // UITableView *myTableView = [[UITableView alloc] initWithFrame:CGRectZero
 //                                                         style:UITableViewStyleGrouped]
@@ -51,10 +51,10 @@ let timeSinceNow = myObject.timeIntervalSinceNow
 // If, however, you're calling a method that does not exist, you'll get a run time error.
 // Use optional chaining in Swift to call methods and properties on an AnyObject instance.
 
-let myCount = myObject.count?
+let myCount = myObject.count
 let myChar = myObject.characterAtIndex?(5)
 if let firstCharacter = myObject.characterAtIndex?(0) {
-    println("Found the first character: \(firstCharacter)")
+    print("Found the first character: \(firstCharacter)")
 }
 
 // Downcasts may also fail. Optionals to the rescue!
@@ -62,10 +62,10 @@ if let firstCharacter = myObject.characterAtIndex?(0) {
 let userDefaults = NSUserDefaults.standardUserDefaults()
 let lastRefreshDate: AnyObject? = userDefaults.objectForKey("LastRefreshDate")
 if let date = lastRefreshDate as? NSDate {
-    println(date.timeIntervalSinceReferenceDate)
+    print(date.timeIntervalSinceReferenceDate)
 }
 
-// If you're certain of the type of an object and know it's not nil, just use 'as'.
+// If you're certain of the type of an object and know it's not nil, just use 'as!'.
 
 // MARK: *** Working with nil
 
@@ -131,7 +131,7 @@ if let date = lastRefreshDate as? NSDate {
 class MyViewController: UIViewController {
     let myButton = UIButton(frame: CGRect(x: 0, y: 0, width: 100, height: 50))
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -142,7 +142,7 @@ class MyViewController: UIViewController {
     }
     
     func tappedButton(sender: UIButton!) {
-        println("tapped button")
+        print("tapped button")
     }
 }
 
@@ -207,7 +207,7 @@ if let downcastedSwiftArray = swiftArray as? [UIView] {
 }
 
 // direct downcast, which may result in a runtime error
-for number in foundationArray as [NSNumber] {
+for number in foundationArray as! [NSNumber] {
     print(number)
 }
 
