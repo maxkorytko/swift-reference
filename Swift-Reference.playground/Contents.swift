@@ -6,7 +6,7 @@ import Foundation
 // Source: The Swift Programming Language -> Language Guide by Apple
 // URL: https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-XID_454
 
-// MARK: *** TUPLES ***
+//: TUPLES
 
 let httpResponse = (200, "OK")
 
@@ -27,7 +27,7 @@ http200Status.description
 
 let (x, y) = (1, 2)
 
-// MARK: *** OPTIONALS ***
+//: OPTIONALS
 
 // Swift's optionals let you indicate the absense of a valid value for any type.
 // Access the optional's value with !, which is known as forced unwrapping.
@@ -59,7 +59,7 @@ if let actualNumber = Int(possibleNumber) {
 let assumedString: String! = "Notice ! instead of ?"
 print(assumedString)
 
-// MARK: *** USING NIL ***
+//: USING NIL
 
 // use nil to indicate an absence of a value in an optional
 // nil can only be used with optionals
@@ -80,7 +80,7 @@ var carColor: String? // this defaults to nil
 var finalColor = carColor ?? color
 // this is the same as 'finalColor = carColor != nil ? carColor! : color'
 
-// MARK: *** RANGE OPERATOR ***
+//: RANGE OPERATOR
 
 // Closed range includes both lower and upper bounds
 for index in 1...5 {
@@ -92,7 +92,7 @@ for index in 1..<5 {
     print("index \(index)")
 }
 
-// MARK: *** STRINGS ***
+//: STRINGS
 
 let immutableName = "Max"
 
@@ -142,7 +142,7 @@ for item in shoppingList {}
 
 for (index, value) in shoppingList.enumerate() {}
 
-// MARK: *** DICTIONARIES ***
+//: DICTIONARIES
 
 // dictionaries are unordered
 // all keys and values of a dictionary are of the same type
@@ -175,7 +175,7 @@ let airportNames = Array(airports.values) // creates an array of values
 
 airports = [:]
 
-// MARK: *** COLLECTION MUTABILITY ***
+//: COLLECTION MUTABILITY
 
 // If you declare a collection (array or dictionary) with var, it's mutable.
 // You can change both, the size and elements of the collection.
@@ -185,7 +185,7 @@ airports = [:]
 //            immutable dictionary does NOT allow changing a value for a key
 
 
-// MARK: *** CONTROL FLOW ***
+//: CONTROL FLOW
 
 for name in ["a", "b", "c"] {}
 
@@ -273,7 +273,7 @@ let resultEmpty = sumAny()
 let result1 = sumAny(Double(), 10, "-10", 2)
 let result2 = sumAny("Martin Todorov", 2, 22, "-3", "10", "", 0, 33, -5)
 
-// MARK: *** FUNCTIONS ***
+//: FUNCTIONS
 
 // void function
 func sayHelloWorld() {
@@ -374,7 +374,7 @@ func swapIntsInOneLine(inout a: Int, inout b: Int) {
 swapIntsInOneLine(&a, b: &b)
 
 
-// MARK: *** FUNCTION TYPES ***
+//: FUNCTION TYPES
 
 // Every function has a specific function type, made up of the param type and return type.
 // You can use a function type just like any other type in Swift.
@@ -415,7 +415,7 @@ func someFunctionA() {
     }
 }
 
-// MARK: *** CLOSURES ***
+//: CLOSURES
 
 // Closures are self-contained blocks of functionality that can be passed around.
 // They are similar to blocks in Objective-C.
@@ -514,7 +514,7 @@ incrementor()
 let alsoIncrementor = incrementor
 alsoIncrementor()
 
-// MARK: *** ENUMERATIONS ***
+//: ENUMERATIONS
 
 // The values defined in an enumeration are the member values of that enumeration.
 // Enumerations in Swift are first-class types in their own right.
@@ -601,7 +601,7 @@ let possiblePlanet = Planet(rawValue: 7)
 if let possiblePlanet = Planet(rawValue: 7) { print(possiblePlanet) }
 else { print("No such planet exists") }
 
-// MARK: *** CLASSES AND STRUCTURES ***
+//: CLASSES AND STRUCTURES
 
 struct Resolution {
     var width = 0 // data type is infered from the assigned value
@@ -659,7 +659,7 @@ class Car {
 var bmw = Car.bmwM5()
 print(bmw.make)
 
-// MARK: *** PROPERTIES ***
+//: PROPERTIES
 
 struct FixedLengthRange {
     // these are stored properties
@@ -778,7 +778,7 @@ class SomeClass {
 print(SomeStructure.storedTypeProperty)
 print(SomeClass.computedTypeProperty)
 
-// MARK: *** METHODS ***
+//: METHODS
 
 // Classes, structures, and enumerations can have methods.
 // Methods are functions that are associated with a type.
@@ -820,7 +820,7 @@ class Counter {
 // Mark a type method with 'static' for structures and enums.
 // Within a type method, 'self' refers to the type itself.
 
-// MARK: *** SUBSCRIPTS ***
+//: SUBSCRIPTS
 
 // Subscripts enable you to query instances of a type by using square brackets syntax.
 // Subscripts can be read-write or readonly.
@@ -846,7 +846,7 @@ set {
 }
 */
 
-// MARK: *** INHERITANCE ***
+//: INHERITANCE
 
 // In Swift, a class does not inherit from a common base class by default.
 // A subclass can override the following of its base class: instance method, instance property,
@@ -860,7 +860,7 @@ set {
 // Prevent a method or property from being overriden by marking it with a 'final' keyword.
 // You can also mark an entire class as final.
 
-// MARK: *** INITIALIZATION ***
+//: INITIALIZATION
 
 // Unlike Objective-C, initializers in Swift do not return a value.
 // Classes and structures must set all of their stored properties to an appropriate value.
@@ -1099,7 +1099,7 @@ var someCreature = Animal(species: "Giraffe") // the returned type is Animal? no
 // Classes have more complex requirements in regards to failable initializers.
 // See 'Failable Initializers for Classes' section in the Swift guide.
 
-// MARK: *** DEINITIALIZATION ***
+//: DEINITIALIZATION
 
 // Deinitializers are only available on class types and there can only be one deinitializer in a class.
 // Swifts calls 'deinit' method automatacally.
@@ -1111,7 +1111,7 @@ class TestDeinit {
     }
 }
 
-// MARK: *** AUTOMATIC REFERENCE COUNTING ***
+//: AUTOMATIC REFERENCE COUNTING
 
 // Weak references are allowed to have no value.
 // For this reason, you must declare every weak reference as having an optional type.
@@ -1174,7 +1174,7 @@ class City {
     }
 }
 
-// MARK: *** OPTIONAL CHAINING ***
+//: OPTIONAL CHAINING
 
 class Person {
     var residence: Residence?
@@ -1218,7 +1218,7 @@ testScores["Unknown"]?[0]++
 // it will become optional.
 // If the type is already optional, it will not become more optional. (??)
 
-// MARK: *** TYPE CASTING ***
+//: TYPE CASTING
 
 // Use 'is' to check types: 'if item is Movie'
 // Use 'as' or 'as?' to downcast superclass to a subclass.
@@ -1232,7 +1232,7 @@ testScores["Unknown"]?[0]++
 // 'AnyObject' is an alias for a type that can represent an instance of any class type.
 // 'Any' is an alias for a type that can represent an instance of any type, except for function types.
 
-// MARK: *** NESTED TYPES ***
+//: NESTED TYPES
 
 struct BlackjackCard {
     // nested Suite enum
@@ -1245,7 +1245,7 @@ let heartsSymbol = BlackjackCard.Suite.Hearts.rawValue
 
 // Nested types can be nested inside other nested types.
 
-// MARK: *** EXTENSIONS ***
+//: EXTENSIONS
 
 // Extensions add new functionality to an existing class, structure, or enumeration type.
 // Extensions are similar to categories in Objective-c, but do not have names.
@@ -1292,7 +1292,7 @@ extension Int {
     }
 }
 
-// MARK: *** PROTOCOLS ***
+//: PROTOCOLS
 
 protocol FullyNamed {
     var fullName: String { get } // gettable property
@@ -1388,7 +1388,7 @@ class Counter2 {
     }
 }
 
-// MARK: *** GENERICS ***
+//: GENERICS
 
 // Swift allows you to define generic functions and generic types.
 
@@ -1486,7 +1486,7 @@ func allMethodsMatch
         return true
 }
 
-// MARK: *** ACCESS CONTROL ****
+//: ACCESS CONTROL
 
 // The default access level is internal.
 // An internal entity can be used by other entities in the same app or framework,
@@ -1553,7 +1553,7 @@ struct TrackedString {
     }
 }
 
-// MARK: *** ADVANCED OPERATORS ****
+//: ADVANCED OPERATORS*
 
 // Bitwise operators: ~ (not), & (and), | (or), ^ (xor), << (left shift), >> (right shift).
 
