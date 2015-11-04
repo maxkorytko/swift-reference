@@ -2,9 +2,9 @@
 
 import UIKit
 
-// MARK: *** INTERACTING WITH OBJECTIVE-C APIs ***
+//: INTERACTING WITH OBJECTIVE-C APIs
 
-// MARK: *** Initializers
+//: Initializers
 
 // When ObjC initializers come over to Swift, they take on native Swift initialier syntax.
 // initWith gets sliced off.
@@ -22,9 +22,9 @@ let color = UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0)
 
 // In ObjC a getter may be called using property syntax.
 // This is not the case in Swift.
-// Only properties that are written using @property syntac in ObjC are imported as properties.
+// Only properties that are written using @property syntax in ObjC are imported as properties.
 
-// MARK: *** Methods
+//: Methods
 
 // The first part of an ObjC method selector becomes the base method name.
 // The first argument appears immediately inside the parentheses, without a name.
@@ -35,7 +35,7 @@ let color = UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0)
 tableView.insertSubview(UIView(frame: CGRectZero), atIndex: 2)
 tableView.reloadData()
 
-// MARK: *** id Compatibility
+//: id Compatibility
 
 // Swift imports id as AnyObject.
 // AnyObject is a protocol that allow you to write type-safe Swift code
@@ -67,7 +67,7 @@ if let date = lastRefreshDate as? NSDate {
 
 // If you're certain of the type of an object and know it's not nil, just use 'as!'.
 
-// MARK: *** Working with nil
+//: Working with nil
 
 // Swift makes all classes in argument and return types optional in imported ObjC APIs.
 // This is because ObjC does not make any guarantees that an object is non-nil.
@@ -75,7 +75,7 @@ if let date = lastRefreshDate as? NSDate {
 // Before you use an ObjC object, you should check that it's not missing,
 // unless you're absolutely certain.
 
-// MARK: *** Extensions
+//: Extensions
 
 // Extensions in Swift are similar to categories in Objective-C.
 // Use them to add the following to existing classes:
@@ -85,21 +85,21 @@ if let date = lastRefreshDate as? NSDate {
 //
 // You can not use extensions to override existing methods or properties on ObjC types.
 
-// MARK: *** Closures
+//: Closures
 
 // ObjC blocks are automatically imported as Swift closures.
 // Closures and blocks are compatible, so you can pass closures to ObjC methods expecting blocks.
 // Variable captured by closures are mutable.
 // In ObjC you need to mark them with __block to be mutable rather than copied.
 
-// MARK: *** Object Comparison
+//: Object Comparison
 
 // There are two comparison operators in Swift: == (equality) and === (identity).
 // == compares the contents of the objects.
 // === determines if variables or constants refer to the same object.
 // Swift automatically invokes 'isEqual:' method on classes inherited from NSObject.
 
-// MARK: *** Swift Type Compatibility
+//: Swift Type Compatibility
 
 // When you define a Swift class that inherits from NSObject or any other ObjC class,
 // the class is automatically compatible with ObjC.
@@ -121,7 +121,7 @@ if let date = lastRefreshDate as? NSDate {
 // - is translated into -
 // - (instancetype)initWithSongName:(NSString *)songName artist:(NSString *)artist
 
-// MARK: *** ObjC Selectors
+//: ObjC Selectors
 
 // Any ObjC selector is a type that refers to the name of an ObjC method.
 // In Swift, ObjC selectors are represented by the Selector structure.
@@ -146,17 +146,17 @@ class MyViewController: UIViewController {
     }
 }
 
-// MARK: *** WRITING SWIFT CLASSES WITH OBJ-C BEHAVIOR ***
+//: WRITING SWIFT CLASSES WITH OBJ-C BEHAVIOR
 
 // Interoperability lets you define classes that incorporate ObcC behavior.
 // Compiler does much of the bridging.
 
-// MARK: *** Integrating with IB
+//: Integrating with IB
 
 // @IBOutlet, @IBAction
 // To enable live, interactive custom view design in IB, use @IBDesignable and @IBInspectable.
 
-// MARK: *** Specifying Property Attributes
+//: Specifying Property Attributes
 
 // Swift properties are stong by default.
 // Weak properties must have an optional class type.
@@ -164,26 +164,26 @@ class MyViewController: UIViewController {
 // Use 'var' to create a read-write property.
 // Provide a getter only for a computed property to make it read-only.
 
-// MARK: *** Using Swift Class Names with ObjC APIs
+//: Using Swift Class Names with ObjC APIs
 
 // Swift classes are namespaced based on the module they are compiled in.
 // For example, a fully qualified class name could be MyApp.MyClassName.
 // Swift classes are exposed to the ObjC runtime with their fully qualified names.
 // If you use string representation of Swift classes, you must use their fully qualified names.
 
-// MARK: *** WORKING WITH COCOA DATA TYPES ***
+//: WORKING WITH COCOA DATA TYPES
 
 // Swift automatically converts some data types to and from ObjC.
 // There are also some data types that can be used interchangeably with ObjC.
 // Convertable and interchangeable data types are called bridged data types.
 
-// MARK: *** Strings
+//: Strings
 
 // Swift automatically bridges between String and NSString classes.
 // There should be no need to use NSString in Swift code.
 // If you do need to use NSString, you can cast to Swift String using 'as'.
 
-// MARK: *** Numbers
+//: Numbers
 
 let n = 42
 let m: NSNumber = n
@@ -191,7 +191,7 @@ let m: NSNumber = n
 // These types are automatically bridged to NSNumber:
 // Int, UInt, Float, Double, Bool
 
-// MARK: *** Collections
+//: Collections
 
 // Swift automatically bridges NSArray and NSDictionary classes.
 
@@ -217,7 +217,7 @@ for number in foundationArray as! [NSNumber] {
 // You can create an NSArray from Swift. Make sure to explicitly set the type to NSArray.
 let schoolSupplies: NSArray = ["Pencil", "Eraser", "Notebook"]
 
-// MARK: *** Dictionaries
+//: Dictionaries
 
 // When you bridge from NSDictionary to Swift dictionary,
 // the resulting dictionary is of type [NSObject: AnyObject].
@@ -228,7 +228,7 @@ let schoolSupplies: NSArray = ["Pencil", "Eraser", "Notebook"]
 
 // For the most part, the rules for bridging/casting to and from Swift are the same as for arrays.
 
-// MARK: *** Foundation Data Types and Functions
+//: Foundation Data Types and Functions
 
 let rect = CGRect(x: 50, y: 50, width: 100, height: 100)
 let width = rect.width // same as CGRectGetWidth(rect)
@@ -237,3 +237,27 @@ let maxX = rect.maxX // same as CGRectGetMaxX(rect)
 // Swift bridges NSUInteger and NSInteger to Int.
 
 // NSAssert function do not carry over to Swift. Use 'assert' function instead.
+
+//: Error Handling
+
+// Swift automatically translates ObjC methods that produce errors into methods that
+// throw an error according to Swift's native error handling functionality.
+
+// If the last non-block parameter of an ObjC method is of type NSError**, Swift replaces it with 'throws'.
+
+// EX: -(BOOL)removeItemAtURL:(NSURL *)url error:(NSError **)error
+// - is translated into -
+// func removeItemAtURL(url: NSURL) throws
+// Notice that the return type is Void.
+
+// If an error producing ObjC method returns an object (which means it can return nil),
+// Swift changes the return type to an non optional type.
+
+//: Singleton
+
+// In ObjC you use 'dispatch_once' to create singletons.
+// In Swift, you create a static type property, which is guaranteed to be lazily initialized only once.
+
+class Singleton {
+    static let sharedInstance = Singleton()
+}

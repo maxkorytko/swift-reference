@@ -680,7 +680,8 @@ let rangeOfFourItems = FixedLengthRange(firstValue:0, length: 4)
 
 // Create lazy properties by marking a stored property with 'lazy' keyword.
 // lazy var myProperty: Int
-// Lazy properties are evaluated when they are first used.
+// Lazy properties are evaluated once when they are first used.
+// Lazy properties are evaluated when an instance is fully-initialized, so they can access 'self'.
 // Constant properties can not be marked lazy.
 
 // Classes, structures, and enumerations can also have computed properties.
@@ -1553,7 +1554,7 @@ struct TrackedString {
     }
 }
 
-//: ADVANCED OPERATORS*
+//: ADVANCED OPERATORS
 
 // Bitwise operators: ~ (not), & (and), | (or), ^ (xor), << (left shift), >> (right shift).
 
@@ -1620,3 +1621,80 @@ func != (left: Vector2D, right: Vector2D) -> Bool {
 
 // Swift allows you to define custom operators.
 // For more details, consult the language guide: Advanced Operators -> Custom Operators.
+
+//: ERROR HANDLING
+
+// An error is represented by a type that conform to the ErrorType protocol.
+// This protocol indicates that the type can be used for error handling.
+
+enum VendingMachineError: ErrorType {
+    case InvalidSelection
+    case InsufficientFunds(coinsNeeded: Int)
+    case OutOfStock
+}
+
+// Throw an error to indicate that normal execution is not possible.
+
+throw VendingMachineError.InsufficientFunds(coinsNeeded: 10)
+
+// There are 4 ways to handle and error in Swift:
+// - propagate the error from the function that calls that function
+// - handle the error using do-catch statement
+// - handle the error as an optional value
+// - assert that the error will not occur
+
+// Propagating Errors.
+
+// This function is called a 'throwing function'.
+// A throwing function propagates errors throws inside of it.
+// Only throwing functions can propagate errors.
+//
+func canThrowError() throws -> String {
+    throw VendingMachineError.OutOfStock
+}
+
+func anotherCanThrowError() throws {
+    // the error is propagated to the calling function
+    print(try canThrowError())
+}
+
+// Handling Errors Using Do-Catch.
+
+do {
+    try canThrowError()
+} catch VendingMachineError.InsufficientFunds(let coinsNeeded) {
+    // handle
+} catch {
+    // The error is available through the local constant named 'error'.
+}
+
+// A pattern can be used in 'catch' to match specific errors, such as 'catch pattern where condition'
+
+// Converting errors to optional values.
+
+// the value will be nil if the function throws an error
+let someValue = try? canThrowError()
+
+// Using assertions.
+
+func canNotThrowError() throws -> Int {
+    return 0
+}
+
+// This code wraps the call in a runtime assertion that an error won't be thrown.
+// You'll get a runtime error is an error is thrown.
+//
+let someOtherValue = try! canNotThrowError()
+
+// Cleanup actions.
+
+func processFile(fileName: String) throws {
+    if (true) {
+        try canThrowError()
+        
+        defer {
+            // The code in the defer statement will be executed just before code execution leaves the current block of code.
+            // 'defer' can be used even when no error handling code is involved.
+        }
+    }
+}
