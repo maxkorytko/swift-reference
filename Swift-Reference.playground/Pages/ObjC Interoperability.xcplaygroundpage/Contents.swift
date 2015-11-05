@@ -1,4 +1,4 @@
-// Playground - noun: a place where people can play
+//: [See Also: Swift Reference](Swift)
 
 import UIKit
 
@@ -110,7 +110,7 @@ if let date = lastRefreshDate as? NSDate {
 // The compiler does not add it automatically for 'private' members, however.
 
 // When you use Swift API in ObjC, the compiler performes direct translation.
-// EX: 
+// EX:
 // func playSong(name: String)
 // - is translated into -
 // - (void)playSong:(NSString *)name
