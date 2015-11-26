@@ -111,7 +111,7 @@ print("This is an example of string interpolation. \(2 * 2)")
 
 if mutableName == immutableName {}
 
-// MARK: ARRAYS
+//: ARRAYS
 
 // all elements of an array are of the same type
 
@@ -119,6 +119,8 @@ var emptyArray: [Int] = [] // same as: var emptyArray = Int[]()
 
 var someInts = [Int](count: 5, repeatedValue: 1)
 var anotherSomeInts = Array(count: 5, repeatedValue: 1) // array type is inferred
+
+var someNumbers = [Int](1..<5)
 
 var shoppingList = ["Eggs", "Milk"]
 shoppingList.count
