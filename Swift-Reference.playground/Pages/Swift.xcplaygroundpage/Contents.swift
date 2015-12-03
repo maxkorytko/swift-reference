@@ -580,6 +580,11 @@ case .QRCode(let productCode):
     print("QRCode")
 }
 
+// Test for a specific enum case using 'if' statement.
+if case .QRCode(let productCode) = productBarcode {
+    print(productCode)
+}
+
 // If all associated values are extracted as constants or variables, use a shorter syntax:
 // 'case let .UPCA(numberSystem, manufacturer, product, check):'
 
