@@ -3,9 +3,9 @@
 
 import Foundation
 
-// Swift Version 2.0
+// Swift Version 3.0
 
-// A quick reference to all the Swift features.
+// A quick reference to some of the Swift features.
 // Source: The Swift Programming Language -> Language Guide by Apple
 // URL: https://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/TheBasics.html#//apple_ref/doc/uid/TP40014097-CH5-XID_454
 
@@ -34,7 +34,7 @@ let (x, y) = (1, 2)
 
 // Swift's optionals let you indicate the absense of a valid value for any type.
 // Access the optional's value with !, which is known as forced unwrapping.
-// Use it when you know for sure that there is value in an optional.
+// Use it when you know for sure that there is a value in the optional.
 // If you try to use ! for an optional without a value, you'll get a runtime error.
 
 let possibleNumber = "123"
@@ -64,9 +64,9 @@ print(assumedString)
 
 //: USING NIL
 
-// use nil to indicate an absence of a value in an optional
-// nil can only be used with optionals
-// unlike in Objective-C, nil is NOT a pointer in Swift
+// Use nil to indicate an absence of a value in an optional.
+// nil can only be used with optionals.
+// Unlike in Objective-C, nil is NOT a pointer in Swift.
 
 var serverResponseCode: Int? = 403
 serverResponseCode = nil
@@ -85,7 +85,8 @@ var finalColor = carColor ?? color
 
 //: RANGE OPERATOR
 
-// Closed range includes both lower and upper bounds
+// Closed range includes both lower and upper bounds.
+// Upper bound must not be smaller than the lower bound.
 for index in 1...5 {
     print("index \(index)")
 }
@@ -113,12 +114,12 @@ if mutableName == immutableName {}
 
 //: ARRAYS
 
-// all elements of an array are of the same type
+// Arrays are homogeneous, e.g. all elements of an array are of the same type.
 
 var emptyArray: [Int] = [] // same as: var emptyArray = Int[]()
 
-var someInts = [Int](count: 5, repeatedValue: 1)
-var anotherSomeInts = Array(count: 5, repeatedValue: 1) // array type is inferred
+var someInts = [Int](repeating: 1, count: 5)
+var anotherSomeInts = Array(repeating: 1, count: 5) // array type is inferred
 
 var someNumbers = [Int](1..<5)
 
@@ -134,7 +135,7 @@ shoppingList[3]
 
 var slice = shoppingList[1..<3]
 slice[0..<1] = ["Bananas", "Apples"]
-slice.insert("Oranges", atIndex: 0)
+slice.insert("Oranges", at: 0)
 slice.removeLast() // same as: slice.removeAtIndex(slice.count - 1)
 
 // combining arrays
@@ -145,12 +146,12 @@ var result = [1, 2, 3] + [4, 5, 6]
 
 for item in shoppingList {}
 
-for (index, value) in shoppingList.enumerate() {}
+for (index, value) in shoppingList.enumerated() {}
 
 //: DICTIONARIES
 
-// dictionaries are unordered
-// all keys and values of a dictionary are of the same type
+// Dictionaries are unordered.
+// All keys and values of a dictionary are of the same type.
 
 var emptyDictionary = Dictionary<Int, String>()
 
@@ -172,7 +173,7 @@ if let oldValue = airports.updateValue("Dublin", forKey: "DUB") {
 }
 
 airports["DUB"] = nil // removes a pair from the dictionary
-airports.removeValueForKey("LHR") // returns the removed value
+airports.removeValue(forKey: "LHR") // returns the removed value
 
 for (airportCode, airportName) in airports {}
 
@@ -196,15 +197,13 @@ for name in ["a", "b", "c"] {}
 
 for (key, value) in ["key1":"value1", "key2":"value2"] {}
 
-for var index = 0; index < 3; ++index {}
-
 for index in 0...3 {}
 
 var i = 0
-while (i < 5) { i++ }
+while (i < 5) { i += 1 }
 
 repeat {
-    i--
+    i -= 1
     // continue and break work exactly the same as in Objective-C
 } while (i > 0)
 
@@ -255,16 +254,16 @@ i = 0
 myLoop: while (i < 10) {
     switch i {
     case 5: break myLoop // without a labeled statement, break would termitate the switch, not the loop
-    default: i++
+    default: i += 1
     }
 }
 
-func sumAny(params: Any...) -> String {
+func sumAny(_ params: Any...) -> String {
     return String(params.map { param in
         switch param {
         case "" as String, 0 as Int:
             return -10
-        case let s as String where Int(s) > 0:
+        case let s as String where Int(s)! > 0:
             return Int(s)!
         case is Int:
             return param as! Int
@@ -295,14 +294,7 @@ func sayHello(name: String) -> String {
 }
 
 // Function parameters are constants by default.
-// If you want to get a copy of an argument, and change it, use the 'var' keyword.
-//
-func sayHello2(var name: String) -> String {
-    name += "!"
-    return "Hello, \(name)"
-}
-
-// returning multiple values from a function using named tuples
+// Returning multiple values from a function using named tuples.
 func count(string: String) -> (vowels: Int, consonants: Int, others: Int) {
     let vowels = 0, consonants = 0, others = 0
     
@@ -311,7 +303,7 @@ func count(string: String) -> (vowels: Int, consonants: Int, others: Int) {
     return (vowels, consonants, others)
 }
 
-let total = count("some string!")
+let total = count(string: "some string!")
 print("\(total.vowels), \(total.consonants), \(total.others)")
 
 // External parameter names.
@@ -325,10 +317,10 @@ func join(string s1: String, toString s2: String, withJoiner joiner: String) -> 
 
 join(string: "Hello", toString: "World!", withJoiner: ", ")
 
-// By default, the first parameter omits its external name.
-// All subsequent parameter names have the same external name as their local name.
+// All parameter names have the same external name as their local name.
+// To omit the external name for the first parameter, use '_'.
 //
-func containsCharacter(string: String, characterToFind: Character) -> Bool {
+func containsCharacter(_ string: String, characterToFind: Character) -> Bool {
     for character in string.characters {
         if character == characterToFind { return true }
     }
@@ -354,8 +346,8 @@ func defaultJoiner2(s1: String, s2: String, joiner: String = " ") -> String {
     return s1 + joiner + s2
 }
 
-defaultJoiner2("Hello", s2: "World")
-defaultJoiner2("Hello", s2: "World", joiner: ", ")
+defaultJoiner2(s1: "Hello", s2: "World")
+defaultJoiner2(s1: "Hello", s2: "World", joiner: ", ")
 
 // In-Out parameters allow passing a variable to a function, and let the function change it.
 // The caller of the function will see the changes made by the function.
@@ -363,7 +355,7 @@ defaultJoiner2("Hello", s2: "World", joiner: ", ")
 // You can not use constants or literals.
 // Prepend an argument name with '&' when calling a function.
 //
-func swapInts(inout a: Int, inout b: Int) {
+func swapInts(_ a: inout Int, b: inout Int) {
     let tmp = a
     a = b
     b = tmp
@@ -372,11 +364,11 @@ func swapInts(inout a: Int, inout b: Int) {
 var a = 3, b = 4
 swapInts(&a, b: &b)
 
-func swapIntsInOneLine(inout a: Int, inout b: Int) {
+func swapIntsInOneLine(a: inout Int, b: inout Int) {
     (a, b) = (b, a)
 }
 
-swapIntsInOneLine(&a, b: &b)
+swapIntsInOneLine(a: &a, b: &b)
 
 
 //: FUNCTION TYPES
@@ -426,6 +418,7 @@ func someFunctionA() {
 // They are similar to blocks in Objective-C.
 // Global and nested functions are special cases of closures.
 // Global functions are the functions that are defined at a global scope.
+// Closures have reference type semantics.
 
 let names = ["Max", "Peter", "John", "Barry"]
 
@@ -433,7 +426,7 @@ func backwards(s1: String, s2: String) -> Bool {
     return s1 > s2
 }
 
-var reversed = names.sort(backwards)
+var reversed = names.sorted(by: backwards)
 
 // closure expression syntax has the following general form:
 
@@ -441,34 +434,34 @@ var reversed = names.sort(backwards)
 //      statements
 // }
 
-reversed = names.sort({ (s1: String, s2: String) -> Bool in
+reversed = names.sorted(by: { (s1: String, s2: String) -> Bool in
     return s1 > s2
 })
 
 // when passing a closure to a function as a parameter,
 // it's always possible to infer the parameter and return types
 //
-reversed = names.sort({ s1, s2 in return s1 > s2 })
+reversed = names.sorted(by: { s1, s2 in return s1 > s2 })
 
 // single-expression closures can implicitly return the result of their single expression
-reversed = names.sort({ s1, s2 in s1 > s2 })
+reversed = names.sorted(by: { s1, s2 in s1 > s2 })
 
 // Swift automatically provides shorthand argument names to inline closures.
 // Therefore, you can omit the closure's argument list from its definition.
 // In such case, the 'in' keyword can also be omitted.
 
-reversed = names.sort({ $0 > $1 })
+reversed = names.sorted(by: { $0 > $1 })
 
 // If a function accepts a closure as its final argument,
 // you can write the closure as a trailing closure.
 // If a function has a single argument, which is a closure, you can omit the parentheses.
 
-reversed = names.sort { $0 > $1 }
+reversed = names.sorted { $0 > $1 }
 
 // If you don't need a parameter passed to the closure, you can replace its name with an underscore.
 
-func handleEvent(handler: (event: String) -> Void) -> Void {
-    handler(event: "LearnSwift")
+func handleEvent(handler: (String) -> Void) -> Void {
+    handler("LearnSwift")
 }
 
 handleEvent() { _ in
@@ -801,7 +794,7 @@ class Counter {
         incrementBy(1)
     }
     
-    func incrementBy(amount: Int) {
+    func incrementBy(_ amount: Int) {
         incrementBy(amount, numberOfTimes: 1)
     }
     
@@ -811,7 +804,7 @@ class Counter {
     // If you do not want Swift to generate external parameter names, use _ in place of an external
     // parameter name.
     //
-    func incrementBy(amount: Int, numberOfTimes: Int) {
+    func incrementBy(_ amount: Int, numberOfTimes: Int) {
         count += amount * numberOfTimes
     }
     
@@ -1223,7 +1216,7 @@ if max.residence?.printNumberOfRooms() != nil {
 
 var testScores = ["Dave": [87, 23, 9], "Max": [134, 9, 1]]
 testScores["Dave"]?[0] = 91
-testScores["Unknown"]?[0]++
+testScores["Unknown"]?[0] += 1
 
 // If the type you're trying to retrieve through optional chaining is not optional,
 // it will become optional.
@@ -1368,7 +1361,7 @@ protocol SomeClassOnlyProtocol: class {
 // but it does not conform to the protocol, you can create an empty extension,
 // which conforms to the protocol.
 
-// It can be useful to require a type to conform to multiple protocols.
+// It may be useful to require a type to conform to multiple protocols.
 // This is called 'protocol composition'.
 // The syntax is the following:
 // var name: protocol<ProtocolA, ProtocolB>
@@ -1382,8 +1375,8 @@ protocol SomeClassOnlyProtocol: class {
 // @objc protocols can only be adopted to by clases.
 
 @objc protocol CounterDataSource {
-    optional func incrementForCount(count: Int) -> Int // optional method requirement
-    optional var fixedIncrement: Int { get } // optional property requirement
+    @objc optional func increment(forCount count: Int) -> Int // optional method requirement
+    @objc optional var fixedIncrement: Int { get } // optional property requirement
 }
 
 class Counter2 {
@@ -1391,7 +1384,7 @@ class Counter2 {
     var dataSource: CounterDataSource?
     
     func increment() {
-        if let amount = dataSource?.incrementForCount?(count) {
+        if let amount = dataSource?.increment?(forCount: count) {
             count += amount
         } else if let amount = dataSource?.fixedIncrement {
             count += amount
@@ -1406,7 +1399,7 @@ class Counter2 {
 // This is an example of a generic function.
 // 'T' is a placeholder type.
 //
-func swapValues<T>(inout a: T, inout b: T) {
+func swapValues<T>(a: inout T, b: inout T) {
     let tmp = a
     a = b
     b = tmp
@@ -1414,7 +1407,7 @@ func swapValues<T>(inout a: T, inout b: T) {
 
 var a1 = 1, b1 = 2
 // Swift automatically infers the type to use in place of T
-swapValues(&a1, b: &b1)
+swapValues(a: &a1, b: &b1)
 
 // If a function or type has a single type parameter, it is traditionally named 'T'.
 // However, for multiple type parameters, choose names that accurately describe their purpose.
@@ -1424,7 +1417,7 @@ swapValues(&a1, b: &b1)
 struct Stack<T> {
     var items = [T]()
     
-    mutating func push(item: T) {
+    mutating func push(_ item: T) {
         items.append(item)
     }
     
@@ -1450,7 +1443,7 @@ extension Stack {
 // Type constraints.
 
 func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
-    for (index, value) in array.enumerate() {
+    for (index, value) in array.enumerated() {
         if value == valueToFind {
             return index
         }
@@ -1462,7 +1455,7 @@ func findIndex<T: Equatable>(array: [T], valueToFind: T) -> Int? {
 // Associated Types.
 
 protocol Container {
-    typealias ItemType // this is an associated type
+    associatedtype ItemType // this is an associated type
     
     mutating func append(item: ItemType)
     var count: Int { get }
@@ -1482,8 +1475,9 @@ protocol Container {
 // - ItemType for C1 must confirm to the Equatable protocol. 'C1.ItemType: Equatable'.
 //
 func allMethodsMatch
-    <C1: Container, C2: Container where C1.ItemType == C2.ItemType, C1.ItemType: Equatable>
-    (container: C1, anotherContainer: C2) -> Bool {
+    <C1: Container, C2: Container>
+    (container: C1, anotherContainer: C2) -> Bool
+    where C1.ItemType == C2.ItemType, C1.ItemType: Equatable{
         if container.count != anotherContainer.count {
             return false
         }
@@ -1535,7 +1529,7 @@ private func someFunc() -> (SomePublicClass, SomePrivateClass)? {
 // A subclass can override any class member that is visible in a certain context.
 
 public class A {
-    private func someMethod() {}
+    fileprivate func someMethod() {}
 }
 
 // Class B extends A and makes it more restrictive.
@@ -1559,7 +1553,7 @@ struct TrackedString {
     
     var value: String = "" {
         didSet {
-            numberOfEdits++
+            numberOfEdits += 1
         }
     }
 }
@@ -1611,7 +1605,7 @@ prefix func - (vector: Vector2D) -> Vector2D {
 // You can also override compound assignment operators (+=, /=, etc.)
 // The left input parameter must be marked 'inout', since it will be modified directly.
 
-func += (inout left: Vector2D, right: Vector2D) {
+func += (left: inout Vector2D, right: Vector2D) {
     // we take advantadge of an addition operator defined earlier for the Vector2D type
     left = left + right
 }
@@ -1637,7 +1631,7 @@ func != (left: Vector2D, right: Vector2D) -> Bool {
 // An error is represented by a type that conform to the ErrorType protocol.
 // This protocol indicates that the type can be used for error handling.
 
-enum VendingMachineError: ErrorType {
+enum VendingMachineError: Error {
     case InvalidSelection
     case InsufficientFunds(coinsNeeded: Int)
     case OutOfStock

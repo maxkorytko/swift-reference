@@ -12,7 +12,7 @@ import UIKit
 // UITableView *myTableView = [[UITableView alloc] initWithFrame:CGRectZero
 //                                                         style:UITableViewStyleGrouped]
 
-var tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), style: .Grouped)
+var tableView = UITableView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), style: .grouped)
 
 // ObjC factory methods get mapped as convenince initializers in Swift.
 
@@ -32,7 +32,7 @@ let color = UIColor(red: 0.5, green: 0.0, blue: 0.5, alpha: 1.0)
 
 // [tableView insertSubview:subview atIndex:2];
 
-tableView.insertSubview(UIView(frame: CGRectZero), atIndex: 2)
+tableView.insertSubview(UIView(frame: CGRect.zero), at: 2)
 tableView.reloadData()
 
 //: id Compatibility
@@ -45,7 +45,7 @@ var myObject: AnyObject = UITableViewCell()
 myObject = NSDate()
 
 // Use can call any ObjC methods and properties without casting.
-let futureDate: AnyObject = myObject.dateByAddingTimeInterval(10)
+let futureDate: AnyObject = myObject.addingTimeInterval(10)
 let timeSinceNow = myObject.timeIntervalSinceNow
 
 // If, however, you're calling a method that does not exist, you'll get a run time error.
@@ -59,8 +59,8 @@ if let firstCharacter = myObject.characterAtIndex?(0) {
 
 // Downcasts may also fail. Optionals to the rescue!
 
-let userDefaults = NSUserDefaults.standardUserDefaults()
-let lastRefreshDate: AnyObject? = userDefaults.objectForKey("LastRefreshDate")
+let userDefaults = UserDefaults.standard
+let lastRefreshDate = userDefaults.object(forKey: "LastRefreshDate")
 if let date = lastRefreshDate as? NSDate {
     print(date.timeIntervalSinceReferenceDate)
 }
@@ -135,10 +135,10 @@ class MyViewController: UIViewController {
         super.init(coder: aDecoder)
     }
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         
-        myButton.addTarget(self, action: "tappedButton:", forControlEvents: .TouchUpInside)
+        myButton.addTarget(self, action: #selector(MyViewController.tappedButton(sender:)), for: .touchUpInside)
     }
     
     func tappedButton(sender: UIButton!) {
@@ -186,7 +186,7 @@ class MyViewController: UIViewController {
 //: Numbers
 
 let n = 42
-let m: NSNumber = n
+let m: NSNumber = NSNumber(value: n)
 
 // These types are automatically bridged to NSNumber:
 // Int, UInt, Float, Double, Bool
