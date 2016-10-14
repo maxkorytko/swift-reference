@@ -1558,6 +1558,49 @@ struct TrackedString {
     }
 }
 
+// 'private' access modifier restricts access even for members defined in the same source file.
+// For example, a class extension declared in the same source file as the class it extends
+// will not be able to access 'private' members of the class.
+// Use 'fileprivate' access modifier to achieve this.
+// 'fileprivate' access modifer restricts access from external classes and modules,
+// but not from classes defined in the same source file.
+
+// A public class or class member is accessible outside of the module in which it is declared.
+// However, such class or class member is not subclassable or overridable.
+// In order for a class or member of a class to be sublassable and/or overridable,
+// it must be marked with the 'open' access modifier.
+
+// This class is not subclassable outside of its module.
+public class NonSubclassableParentClass {
+    // This method is not overridable outside of the module.
+    public func foo() {}
+    
+    // This method is not overridable outside of the module,
+    // because its class restricts its access level.
+    // It is not invalid to declare it as 'open'.
+    open func bar() {}
+    
+    // The behavior of 'final' methods remains unchanged.
+    public final func baz() {}
+}
+
+// This class is subclassable both inside and outside of its module.
+open class SubclassableParentClass {
+    // This property is not overridable outside of the module.
+    public var size : Int = 0
+    
+    // This method is not overridable outside of the module.
+    public func foo() {}
+    
+    // This method is overridable both inside and outside of the module.
+    open func bar() {}
+    
+    /// The behavior of a 'final' method remains unchanged.
+    public final func baz() {}
+}
+
+/// The behavior of 'final' classes remains unchanged.
+public final class FinalClass { }
 //: ADVANCED OPERATORS
 
 // Bitwise operators: ~ (not), & (and), | (or), ^ (xor), << (left shift), >> (right shift).
